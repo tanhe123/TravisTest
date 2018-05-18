@@ -23,8 +23,8 @@ before_script:
   - IMAGE_TAG=${WITH_VERSION:-IMAGE_TAG} # build or empty or build-version or -version
   - IMAGE_TAG=${IMAGE_TAG#-} && echo "IMAGE_TAG=$IMAGE_TAG" # build or empty or build-version or version
   - IMAGE_TAG=${IMAGE_TAG:+:$IMAGE_TAG} # add leading : if not empty
-  - IMAGE="aliyunfc/${RUNTIME}${IMAGE_TAG}" 
-  - cd ${RUNTIME}${VARIANT:+/VARIANT}
+  - IMAGE="aliyunfc/${RUNTIME}${IMAGE_TAG}" && echo "IMAGE=$IMAGE"
+  - cd ${RUNTIME}${VARIANT:+/$VARIANT}
 
 script:
   - docker build -t "$IMAGE" .
