@@ -18,7 +18,7 @@ env:
 
 before_script:
   - env | sort
-  - if [ "run" != $VARIANT ]; then IMAGE_TAG="$VARIANT"; fi # build or empty
+  - if [ "run" != $VARIANT ]; then IMAGE_TAG="$VARIANT" && echo "$IMAGE_TAG"; fi # build or empty
   - if [ -n $TRAVIS_TAG ]; then IMAGE_TAG="$IMAGE_TAG-$TRAVIS_TAG"; fi # build or empty or build-version or -version
   - IMAGE_TAG=${WITH_VERSION#-} && echo "IMAGE_TAG=$IMAGE_TAG" # build or empty or build-version or version
   - IMAGE_TAG=${IMAGE_TAG:+:$IMAGE_TAG} # add leading : if not empty
