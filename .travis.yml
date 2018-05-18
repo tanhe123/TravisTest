@@ -19,8 +19,9 @@ env:
 before_script:
   - env | sort
   - if [ "run" != "$VARIANT" ]; then IMAGE_TAG="$VARIANT" && echo "$IMAGE_TAG"; fi # build or empty
-  - if [ -n "$TRAVIS_TAG" ]; then WITH_VERSION="$IMAGE_TAG-$TRAVIS_TAG" && echo "WITH_VERSION=$WITH_VERSION"; fi # build or empty or build-version or -version
-  - IMAGE_TAG=${WITH_VERSION:-IMAGE_TAG} # build or empty or build-version or -version
+  # - if [ -n "$TRAVIS_TAG" ]; then WITH_VERSION="$IMAGE_TAG-$TRAVIS_TAG" && echo "WITH_VERSION=$WITH_VERSION"; fi 
+  - WITH_VERSION=${TRAVIS_TAG:+$IMAGE_TAG-$TRAVIS_TAG} # # build or empty or build-version or -version
+  - IMAGE_TAG=${WITH_VERSION:-$IMAGE_TAG} # build or empty or build-version or -version
   - IMAGE_TAG=${IMAGE_TAG#-} && echo "IMAGE_TAG=$IMAGE_TAG" # build or empty or build-version or version
   - IMAGE_TAG=${IMAGE_TAG:+:$IMAGE_TAG} # add leading : if not empty
   - IMAGE="aliyunfc/${RUNTIME}${IMAGE_TAG}" && echo "IMAGE=$IMAGE"
