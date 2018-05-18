@@ -21,6 +21,7 @@ env:
 
 before_script:
   - env | sort
+  - if [ "$TRAVIS_BRANCH" != "master" ] && [ -z "$TRAVIS_TAG" ]; then travis_terminate 0; fi 
   - if [ "run" != "$VARIANT" ]; then IMAGE_TAG="$VARIANT" && echo "$IMAGE_TAG"; fi # build or empty
   - WITH_VERSION=${TRAVIS_TAG:+$IMAGE_TAG-$TRAVIS_TAG} && echo "WITH_VERSION=$WITH_VERSION" # build or empty or build-version or -version
   - IMAGE_TAG=${WITH_VERSION:-$IMAGE_TAG} && echo "IMAGE_TAG=$IMAGE_TAG" # build or empty or build-version or -version
