@@ -31,4 +31,4 @@ before_script:
 
 script:
   - docker build -t "$IMAGE" .
-  - docker login -u $DOCKER_USER -p $DOCKER_PASS && docker push $REPO/$IMAGE
+  - docker login -u $DOCKER_USER -p $DOCKER_PASS && docker push $IMAGE
