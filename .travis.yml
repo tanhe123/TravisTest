@@ -5,6 +5,8 @@ services: docker
 
 env:
   - RUNTIME=python2.7 VARIANT=build
+  - RUNTIME=python2.7 VARIANT=run
+
   # - RUNTIME=python3.6 VARIANT=build
   # - RUNTIME=nodejs4.4 VARIANT=build
   # - RUNTIME=nodejs6.10.3 VARIANT=build
@@ -16,8 +18,11 @@ env:
 
 before_script:
   - env | sort
-  - cd "${RUNTIME}${VARIANT:+/$VARIANT}"
-  - image="aliyunfc/${RUNTIME}${VARIANT:+:$VARIANT}"
+  - if [ "run" != $VARIANT ]; then IMAGE_TAG="$VARIANT"; fi # build or empty
+  - if [ -n $TRAVIS_TAG ]; then IMAGE_TAG="$IMAGE_TAG-$TRAVIS_TAG"; fi # build or empty or build-version or -version
+  - IMAGE_TAG=${WITH_VERSION#-} && echo "IMAGE_TAG=$IMAGE_TAG" # build or empty or build-version or version
+  - IMAGE_TAG=${IMAGE_TAG:+:$IMAGE_TAG} # add leading : if not empty
+  - IMAGE="aliyunfc/${RUNTIME}$IMAGE_TAG" 
 
 script:
-  - docker build -t "$image" .
+  - docker build -t "$IMAGE" .
