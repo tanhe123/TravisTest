@@ -11,8 +11,8 @@ env:
   # - RUNTIME=nodejs8 VARIANT=build
   # - RUNTIME=java8 VARIANT=build
 
-install:
-  - 
+# install:
+#   - 
 
 before_script:
   - env | sort
@@ -20,4 +20,4 @@ before_script:
   - image="aliyunfc/${RUNTIME}${VARIANT:+:$VARIANT}"
 
 script:
-  - docker build -t "$image"
+  - docker build -t "$image" .
