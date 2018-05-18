@@ -32,4 +32,11 @@ before_script:
 
 script:
   - docker build -t "$IMAGE" .
-  - docker login -u $DOCKER_USER -p $DOCKER_PASS && docker push $IMAGE
+  - echo "$DOCKER_PASS" | docker login -u $DOCKER_USER --password-stdin && docker push $IMAGE
+
+deploy:
+  provider: script
+  script: 
+  on:
+    tags: true
+    branch: master
