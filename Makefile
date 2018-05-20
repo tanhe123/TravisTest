@@ -45,7 +45,7 @@ build: check-runtime-env check-variant-env check-repo-env check-tag
 build-push: build login 
 	docker push $(IMAGE)
 
-update-latest: check-runtime-env check-variant-env check-repo-env # login 
+update-latest: check-runtime-env check-variant-env check-repo-env login 
 	LATEST_VERSION=$(shell (head -n 1 LATEST));\
 	if [ "run" != "$$VARIANT" ]; then DEST_TAG=build; SOURCE_TAG=build-$$LATEST_VERSION; else DEST_TAG=latest; SOURCE_TAG=$$LATEST_VERSION; fi;\
 	docker pull $(REPO)/$(RUNTIME):$$SOURCE_TAG &&\
