@@ -20,7 +20,7 @@ env:
 
 before_script:
   - env | sort
-  - if [ "$TRAVIS_BRANCH" != "master" ] && [ -z "$TRAVIS_TAG" ]; then travis_terminate 0; fi 
+  - if [ -z "$TRAVIS_TAG" ]; then travis_terminate 0; fi 
 
 script:
   make build-push
