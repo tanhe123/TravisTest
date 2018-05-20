@@ -4,8 +4,11 @@ language: bash
 services: docker
 
 stages:
-  - build-push
-  - update-latest
+  - name: build-push
+    if: tag IS present
+  - name: update-latest
+    if: branch = master 
+
 
 env:
   matrix:
