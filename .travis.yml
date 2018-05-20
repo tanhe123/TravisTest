@@ -25,10 +25,6 @@ env:
   # - RUNTIME=nodejs8 VARIANT=build
   # - RUNTIME=java8 VARIANT=build
 
-before_script:
-  - env | sort
-  - if [ "$TRAVIS_BRANCH" != "master" ] && [ -z "$TRAVIS_TAG" ]; then travis_terminate 0; fi 
-
 jobs: 
   include:
     - stage: build-push
