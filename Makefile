@@ -1,6 +1,6 @@
 .PHONY: login build build-push update-latest
 
-# # build or empty
+# build or empty
 TAG_PREFIX := $(VARIANT:run%=%)
 
 # build or empty or build-version or -version
@@ -45,8 +45,9 @@ build: check-runtime-env check-variant-env check-repo-env check-tag
 build-push: build login 
 	docker push $(IMAGE)
 
-update-latest: check-runtime-env check-variant-env check-repo-env login 
-	LATEST=$(shell (head -n 1 LATEST)) && \
-	docker pull $$REPO/$${RUNTIME}:$$LATEST && \
-	docker tag $$REPO/$${RUNTIME}:$$LATEST $$REPO/$${RUNTIME}:latest && \
-	docker push $$REPO/$${RUNTIME}:latest	
+update-latest: check-runtime-env check-variant-env check-repo-env # login 
+	LATEST_VERSION=$(shell (head -n 1 LATEST));\
+	if [ "run" != "$$VARIANT" ]; then DEST_TAG=build; SOURCE_TAG=build-$$LATEST_VERSION; else DEST_TAG=latest; SOURCE_TAG=$$LATEST_VERSION; fi;\
+	docker pull $(REPO)/$(RUNTIME):$$SOURCE_TAG &&\
+	docker tag $(REPO)/$(RUNTIME):$$SOURCE_TAG $(REPO)/$(RUNTIME):$$DEST_TAG &&\
+	docker push $(REPO)/$(RUNTIME):$$DEST_TAG
