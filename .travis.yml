@@ -3,6 +3,10 @@ sudo: required
 language: bash
 services: docker
 
+stages:
+  - build-push
+  - update-latest
+
 env:
   matrix:
   - RUNTIME=python2.7 VARIANT=build
@@ -20,7 +24,12 @@ env:
 
 before_script:
   - env | sort
-  - if [ -z "$TRAVIS_TAG" ]; then travis_terminate 0; fi 
+  - if [ "$TRAVIS_BRANCH" != "master" ] && [ -z "$TRAVIS_TAG" ]; then travis_terminate 0; fi 
 
-script:
-  make build-push
+jobs: 
+  include:
+    - stage: build-push
+      script: make build-push
+    - stage: update-latest  
+      script: make update-latest  
+    
