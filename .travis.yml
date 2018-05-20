@@ -3,13 +3,6 @@ sudo: required
 language: bash
 services: docker
 
-stages:
-  - name: build-push
-    if: tag IS present
-  - name: update-latest
-    if: branch = master 
-
-
 env:
   matrix:
   - RUNTIME=python2.7 VARIANT=build
@@ -25,10 +18,10 @@ env:
   # - RUNTIME=nodejs8 VARIANT=build
   # - RUNTIME=java8 VARIANT=build
 
-jobs: 
-  include:
-    - stage: build-push
-      script: make build-push
-    - stage: update-latest  
-      script: make update-latest  
-    
+before_script:
+  - env | sort
+  - if [ "$TRAVIS_BRANCH" != "master" ] && [ -z "$TRAVIS_TAG" ]; then travis_terminate 0; fi
+
+script:
+  - if [ -n "$TRAVIS_TAG" ]; then make build-push; fi
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then make build-push; fi
