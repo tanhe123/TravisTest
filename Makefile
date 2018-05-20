@@ -46,7 +46,7 @@ build-push: build login
 	docker push $(IMAGE)
 
 update-latest: check-runtime-env check-variant-env check-repo-env login 
-	@ LATEST=$(shell (head -n 1 LATEST)) && \
+	LATEST=$(shell (head -n 1 LATEST)) && \
 	docker pull $$REPO/$${RUNTIME}:$$LATEST && \
 	docker tag $$REPO/$${RUNTIME}:$$LATEST $$REPO/$${RUNTIME}:latest && \
 	docker push $$REPO/$${RUNTIME}:latest	
